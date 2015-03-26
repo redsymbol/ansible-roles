@@ -14,24 +14,21 @@
         name: "{{ item }}"
       with_items:
         - libapache2-mod-wsgi-py3 # So as not to conflict with wsgi_express
-    - script: py34_venv_with_pip.sh /srv/VENV/mod_wsgi creates=/srv/VENV/mod_wsgi
+    - script: py34_venv_with_pip.sh /srv/VENV/wsgiexpress creates=/srv/VENV/wsgiexpress
     - pip:
         name: mod_wsgi
-        executable: /srv/VENV/mod_wsgi/bin/pip
-    - script: /srv/VENV/mod_wsgi/bin/mod_wsgi-express install-module creates=/usr/lib/apache2/modules/mod_wsgi-py34.cpython-34m.so
-    - file:
-        state: link
-        src: /srv/todoapi/apache/wsgi_express.conf
+        executable: /srv/VENV/wsgiexpress/bin/pip
+    - command: /srv/VENV/wsgiexpress/bin/mod_wsgi-express install-module creates=/usr/lib/apache2/modules/mod_wsgi-py34.cpython-34m.so
+    - copy:
+        src: wsgi_express.conf
         dest: /etc/apache2/mods-available/wsgi_express.conf
       notify:
         restart apache
-    - file:
-        state: link
-        src: /srv/todoapi/apache/wsgi_express.load
+    - copy:
+        src: wsgi_express.load
         dest: /etc/apache2/mods-available/wsgi_express.load
       notify:
         restart apache
     - apache2_module:
         name: wsgi_express
         state: present
-
