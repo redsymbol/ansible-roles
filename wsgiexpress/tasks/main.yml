@@ -23,12 +23,12 @@
         src: wsgi_express.conf
         dest: /etc/apache2/mods-available/wsgi_express.conf
       notify:
-        restart apache
+        restart httpd
     - copy:
         src: wsgi_express.load
         dest: /etc/apache2/mods-available/wsgi_express.load
       notify:
-        restart apache
+        restart httpd
     - apache2_module:
         name: wsgi_express
         state: present
