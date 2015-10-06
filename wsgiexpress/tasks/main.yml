@@ -8,7 +8,6 @@
         # for wsgi_express
         - apache2-dev
         - libpython3.4-dev
-        - python3.4-venv
     - name: ensure certain packages are not installed
       apt:
         state: absent
